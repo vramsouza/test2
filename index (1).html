@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EL3VATE - Summer 2026</title>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --primary-light: #1e293b;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-muted: #475569;
+            --border: #cbd5e1;
+            --highlight-bg: #f1f5f9;
+            --badge-bg: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--bg);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            background-color: var(--primary);
+            padding: 0.75rem 1rem;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            transition: background-color 0.2s ease;
+        }
+
+        nav a:hover, nav a:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            outline: none;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: #ffffff;
+            text-align: center;
+            padding: 3rem 1rem 2.5rem 1rem;
+        }
+
+        header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        header p {
+            margin: 0.3rem 0;
+            font-size: 1.15rem;
+            color: #e2e8f0;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1.25rem;
+        }
+
+        section {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+            font-size: 1.6rem;
+        }
+
+        h3 {
+            color: var(--primary-light);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+
+        .glance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .glance-card {
+            background-color: var(--highlight-bg);
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .glance-card h4 {
+            margin: 0 0 0.3rem 0;
+            color: var(--primary-light);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .glance-card p {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .plo-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0 0 0;
+        }
+
+        .plo-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .plo-list li::before {
+            content: "•";
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -0.2rem;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 1rem;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: var(--highlight-bg);
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .day-card {
+            background-color: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+            padding: 1.25rem;
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .day-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent);
+        }
+
+        .day-time {
+            font-size: 0.85rem;
+            background-color: var(--badge-bg);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .agenda-list, .objectives-list, .materials-list, .due-list {
+            margin: 0.25rem 0 0.75rem 0;
+            padding-left: 1.25rem;
+        }
+
+        .agenda-list li, .objectives-list li, .materials-list li, .due-list li {
+            margin-bottom: 0.3rem;
+        }
+
+        .practice-link {
+            display: inline-block;
+            background-color: var(--accent);
+            color: #ffffff;
+            padding: 0.8rem 1.75rem;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .practice-link:hover, .practice-link:focus {
+            background-color: var(--accent-hover);
+            outline: none;
+        }
+
+        .toggle-btn {
+            background-color: var(--highlight-bg);
+            border: 1px solid var(--border);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .toggle-btn:hover {
+            background-color: #e2e8f0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: var(--primary);
+            color: #ffffff;
+            margin-top: 3rem;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            section {
+                padding: 1.25rem;
+            }
+            th, td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="#glance">Course at a Glance</a></li>
+            <li><a href="#schedule">Weekly Schedule</a></li>
+            <li><a href="#grades">How Grades Work</a></li>
+            <li><a href="#policies">Policies</a></li>
+            <li><a href="#practice">Practice</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>EL3VATE</h1>
+        <p><strong>Instructor:</strong> David Hijirida</p>
+        <p><strong>Semester:</strong> Summer 2026</p>
+    </header>
+
+    <main>
+        <section id="glance">
+            <h2>Course at a Glance</h2>
+            <div class="glance-grid">
+                <div class="glance-card">
+                    <h4>Meeting Times</h4>
+                    <p>July 20, 2026 – July 31, 2026<br>9:00 AM – 12:00 PM</p>
+                </div>
+                <div class="glance-card">
+                    <h4>Location</h4>
+                    <p>Not specified in syllabus</p>
+                </div>
+                <div class="glance-card">
+                    <h4>Office Hours</h4>
+                    <p>Not specified in syllabus</p>
+                </div>
+                <div class="glance-card">
+                    <h4>Contact</h4>
+                    <p>Not specified in syllabus</p>
+                </div>
+            </div>
+
+            <h3>Program Learning Outcomes (PLOs)</h3>
+            <ul class="plo-list">
+                <li><strong>PLO 1: EL3vate Course Redesign (Frameworks)</strong> – Participants will design or redesign an existing course with new content emphasizing frameworks covered within the EL3vate program (i.e., engineering design process and entrepreneurship frameworks).</li>
+                <li><strong>PLO 2: Empower Student-led Problem Solving</strong> – Participants will leverage relevant strategies that will empower students to achieve their personal and academic goals while contributing to solving real-world problems as local and global citizens.</li>
+                <li><strong>PLO 3: EL3vate Mindset Shift (Application of the 4Cs)</strong> – Participants will engage in the 4Cs and design course activities that highlight the 4Cs (Creativity, Critical Thinking, Collaboration, Communication) in alignment with 21st-century skills.</li>
+                <li><strong>PLO 4: Develop Experiential Learning Opportunities</strong> – Participants will devise and implement strategies to build and maintain connections with community partners, seamlessly incorporating these strategies into their course framework. Facilitate interactions with industry professionals or community partners, focusing on customer/partner discovery. This includes place-based problem-solving and service-oriented approaches that align with UH’s Strategic Plan to develop successful students for a better future.</li>
+                <li><strong>PLO 5: Implement Redesigned Course</strong> – Participants will implement (i.e., teach) their newly designed course that integrates the frameworks, tools, and concepts introduced during the EL3vate Expedition PD.</li>
+            </ul>
+
+            <h3>Content Framework</h3>
+            <p>Guided by: Entrepreneurial Frameworks &bull; Applications / Problems &bull; Tools to Engage</p>
+        </section>
+
+        <section id="schedule">
+            <h2>Weekly Schedule</h2>
+            <p>Below is the complete day-by-day agenda, materials, learning objectives, and due items across both weeks of the program.</p>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Week & Dates</th>
+                            <th style="width: 45%;">Daily Agendas & Topics</th>
+                            <th style="width: 20%;">Learning Materials</th>
+                            <th style="width: 20%;">What is Due / Assessments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong>Week 1</strong><br>
+                                Jul 20 – Jul 24, 2026
+                            </td>
+                            <td>
+                                <!-- Day 1 -->
+                                <div class="day-card">
+                                    <div class="day-header">
+                                        <span class="day-title">Day 1 (Jul 20): Ulu - Fostering a Growth Mindset and Creativity</span>
+                                        <span class="day-time">9:00 AM - 12:00 PM</span>
+                                    </div>
+                                    <p><em>“Using Imagination to Create Something New” — Get to know each other!</em></p>
+                                    <strong>Learning Activities:</strong>
+                                    <ul class="agenda-list">
+                                        <li>9:00 AM - Introductions (~15 participants) [20 min], Partnerships & Course Tenets Review [2 min], Program Learning Outcomes [3 min], Content structure: Frameworks x Applications x Tools [3 min], Cohort Examples [1 min]</li>
+                                        <li>9:30 AM - Miro reflection: Two truths about the classroom and expectations after PD [5 min]</li>
+                                        <li>9:35 AM - Guest Speaker: Sharla Hanaoka [20 min]</li>
+                                        <li>9:55 AM - BREAK [5 min], Creative ways to convey information [5 min], Pair and Share Miro activity [10 min]</li>
+                                        <li>10:15 AM - Course Map Workshop - backwards design [15 min]</li>
+                                        <li>10:30 AM - How Amazon invents [45 min]</li>
+                                        <li>11:15 AM - Break [5 min]</li>
+                                        <li>11:20 AM - Hands-On Workshop: Real World Problem Solving in breakout rooms [25 min]</li>
+                                        <li>11:45 AM - Pair up and share out problem-based project or activity on MIRO [10 min]</li>
+                                        <li>12:00 PM - Exit activity: “How the day’s learning brought them closer to your dream?” (Waterfall chat)</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Day 2 -->
+                                <div class="day-card">
+                                    <div class="day-header">
+                                        <span class="day-title">Day 2 (Jul 21): Kokua (Service Learning EDP)</span>
+                                        <span class="day-time">9:00 AM - 12:00 PM</span>
+                                    </div>
+                                    <p><em>MEDB STEMworks Engineering Design Process: Defining the Problem & Community Partners</em></p>
+                                    <strong>Learning Activities:</strong>
+                                    <ul class="agenda-list">
+                                        <li>9:00 AM - Review yesterday & mindset for the day [5 min], Introduce STEMworks EDP resource & refine problem</li>
+                                        <li>9:30 AM - Guest Speaker: Allen Murabayashi (Nalukai) [45 min] - frameworks and community partners</li>
+                                        <li>10:25 AM - Break [10 min]</li>
+                                        <li>10:35 AM - Working with community partners breakout rooms: Brainstorm working with community & bringing in partners</li>
+                                        <li>10:55 AM - Break [10 min]</li>
+                                        <li>11:05 AM - Hands-on work: Edit course map [30 min]</li>
+                                        <li>11:35 AM - Exit ticket: 1-minute share on changes made today [20 min]</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Day 3 -->
+                                <div class="day-card">
+                                    <div class="day-header">
+                                        <span class="day-title">Day 3 (Jul 22): Designing Culturally Responsive Solutions</span>
+                                        <span class="day-time">9:00 AM - 12:00 PM</span>
+                                    </div>
+                                    <strong>Learning Activities:</strong>
+                                    <ul class="agenda-list">
+                                        <li>9:00 AM - Intro, recap & roadmap [15 min], Designing Culturally Responsive Solutions [EDP Page 18]</li>
+                                        <li>9:15 AM - Generating Multiple Solutions [20 min]</li>
+                                        <li>9:35 AM - Analyze Pros & Cons & Reflect on Viability [15 min]</li>
+                                        <li>9:50 AM - Culturally Sensitive Solution Designs & Storyboarding [10 min]</li>
+                                        <li>10:00 AM - Miro Activity: “Designing Culturally Responsive Solutions” [40 min task & share]</li>
+                                        <li>10:45 AM - Break [15 min]</li>
+                                        <li>11:00 AM - Course Map Workshop [40 min]</li>
+                                        <li>11:40 AM - Exit Ticket Verbal share: “How has Day 1-3 learning brought you closer to your EL3vate-d classroom?” [20 min]</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Day 4 -->
+                                <div class="day-card">
+                                    <div class="day-header">
+                                        <span class="day-title">Day 4 (Jul 23): Creative Imagination - EDP & Biomimicry</span>
+                                        <span class="day-time">9:00 AM - 12:00 PM</span>
+                                    </div>
+                                    <strong>Learning Activities:</strong>
+                                    <ul class="agenda-list">
+                                        <li>9:00 AM - Recap and Mindset [15 min]</li>
+                                        <li>9:15 AM - Guest Speaker: David Hijirida [20 min] - Application of biomimicry in design</li>
+                                        <li>9:35 AM - Miro Activity: Engineering Design & Biomimicry in random breakout teams of 2</li>
+                                        <li>10:15 AM - Break [10 min]</li>
+                                        <li>10:25 AM - Course Map Revision Workshop [1h 15min] - Integrate nature-inspired design thinking using SCAMPER</li>
+                                        <li>11:40 AM - Exit Ticket Google Groups [20 min]: Reflect and identify one lesson learned from nature</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Day 5 -->
+                                <div class="day-card">
+                                    <div class="day-header">
+                                        <span class="day-title">Day 5 (Jul 24): Campfire Session (Basecamp)</span>
+                                        <span class="day-time">9:00 AM - 12:00 PM</span>
+                                    </div>
+                                    <strong>Learning Activities:</strong>
+                                    <ul class="agenda-list">
+                                        <li>9:00 AM - Recap and Mindset [15 min]</li>
+                                        <li>9:15 AM - Your Turn! Sharing Activity on Miro [60 min total, 4 min each] - Share one resource/story & one course map change</li>
+                                        <li>10:15 AM - Break [5 min]</li>
+                                        <li>10:20 AM - Pause & Movement Activity: Dance Break! (Alice) [10 min]</li>
+                                        <li>10:25 AM - Course Map Workshop [1h 15min]</li>
+                                        <li>11:40 AM - Preview Day 10 presentation guidelines & RISE Model for Peer Feedback</li>
+                                        <li>11:50 AM - Exit Ticket Waterfall Chat: Share gratitude regarding helping others or receiving help</li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td>
+                                <ul class="materials-list">
+                                    <li>SCAMPER framework</li>
+                                    <li>Design Thinking for Educators by IDEO</li>
+                                    <li>STEMworks EDP Link</li>
+                                    <li>Framework 1</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul class="due-list">
+                                    <li><strong>Jul 20:</strong> Share/incorporate project idea on MIRO & complete final draft of course map with draft problem-based activity</li>
+                                    <li><strong>Jul 21:</strong> Miro Board - incorporate STEMworks EDP Wheel</li>
+                                    <li><strong>Jul 22:</strong> Daily Miro activity & verbal exit share</li>
+                                    <li><strong>Jul 23:</strong> Reflection in EL3vate Cohort Google Groups Forum</li>
+                                    <li><strong>Jul 24:</strong> Day 5 Sharing Activity on Miro & Waterfall Chat</li>
+                                </ul>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <strong>Week 2</strong><br>
+                                Jul 27 – Jul 31, 2026
+                            </td>
+                            <td>
+                                <!-- Day 6 -->
+                                <div class="day-card">
+                                    <div class="day-header">
+                                        <span class="day-title">Day 6 (Jul 27): Entrepreneurial Frameworks & Active Listening</span>
+                                        <span class="day-time">9:00 AM - 12:00 PM</span>
+                                    </div>
+                                    <strong>Learning Activities:</strong>
+                                    <ul class="agenda-list">
+                                        <li>9:00 AM - Recap and Mindset: Lean Business Model Framework for Customer Discovery</li>
+                                        <li>9:30 AM - Guest Speaker: Jeff Hui [45 min] - Lean Business Model Frameworks & Hypothesis Testing</li>
+                                        <li>10:15 AM - Break [10 min]</li>
+                                        <li>10:30 AM - Pilina Activity: “Solution Sprint” on Miro & Customer Discovery Listening Activity in breakouts</li>
+                                        <li>10:55 AM - Main Room Group Share: Sharing & Intro to “Pivot”</li>
+                                        <li>11:05 AM - Break</li>
+                                        <li>11:15 AM - Hands-on Work Time (Hana Lima): Incorporate active listening exercise and assessment</li>
+                                        <li>11:55 AM - Exit Ticket reflection on impactful aspects [5 min]</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Day 7 -->
+                                <div class="day-card">
+                                    <div class="day-header">
+                                        <span class="day-title">Day 7 (Jul 28): Customer Discovery & Value Proposition</span>
+                                        <span class="day-time">9:00 AM - 12:00 PM</span>
+                                    </div>
+                                    <p><em>Huli and Uniu (Turn and Pivot)</em></p>
+                                    <strong>Learning Activities:</strong>
+                                    <ul class="agenda-list">
+                                        <li>9:00 AM - Recap and Mindset [15 min]</li>
+                                        <li>9:15 AM - Miro Activity: Select desirable solution & write Value Proposition Statement</li>
+                                        <li>9:30 AM - Value Prop Examples & Reinforce Pivots / Market Research [30 min]</li>
+                                        <li>11:00 AM - Break</li>
+                                        <li>11:10 AM - Course Map Workshop: Incorporating Lean Business Model & Customer Discovery</li>
+                                        <li>11:50 AM - Exit Ticket: “How is coming up with a solution to a problem more of a process than a single step?”</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Day 8 -->
+                                <div class="day-card">
+                                    <div class="day-header">
+                                        <span class="day-title">Day 8 (Jul 29): Learning New Tech and Prototyping Process</span>
+                                        <span class="day-time">9:00 AM - 12:00 PM</span>
+                                    </div>
+                                    <p><em>Focus on Kupono (making right choices) in preparing students for real-world challenges</em></p>
+                                    <strong>Learning Activities:</strong>
+                                    <ul class="agenda-list">
+                                        <li>9:00 AM - Recap and Mindset [15 min]</li>
+                                        <li>9:30 AM - Guest Speaker: Timothy Lum [45 min] - Prototyping equipment available at RISE</li>
+                                        <li>10:30 AM - Prototyping tools overview [30 min]</li>
+                                        <li>11:00 AM - Hands-on Design Challenge! Fast and messy prototyping / Course map revisions [45 min]</li>
+                                        <li>11:50 AM - Share Out / Exit: Challenges and pivots made during activity [15 min]</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Day 9 -->
+                                <div class="day-card">
+                                    <div class="day-header">
+                                        <span class="day-title">Day 9 (Jul 30): Confidence & Optimism for the Future</span>
+                                        <span class="day-time">9:00 AM - 12:00 PM</span>
+                                    </div>
+                                    <p><em>Humanities + AI & Resource Ecosystem</em></p>
+                                    <strong>Learning Activities:</strong>
+                                    <ul class="agenda-list">
+                                        <li>9:00 AM - Mindset and Recap [30 min]</li>
+                                        <li>9:30 AM - Guest Speaker: Kiran Mascarenhas [60 min] - Humanities majors in the age of AI</li>
+                                        <li>10:30 AM - Break [10 min]</li>
+                                        <li>10:40 AM - Guest Speakers: UHOIC, MEDB, PACE [45 min] - Support resources for course integration</li>
+                                        <li>11:30 AM - Presentation Guidelines & RISE Model Overview / SCAMPER revisions [20 min]</li>
+                                        <li>11:50 AM - Exit Ticket: Reflective statement & Zoom Class Photo [10 min]</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Day 10 -->
+                                <div class="day-card">
+                                    <div class="day-header">
+                                        <span class="day-title">Day 10 (Jul 31): Presentations and Peer Feedback (Ha'aheo)</span>
+                                        <span class="day-time">9:00 AM - 12:00 PM</span>
+                                    </div>
+                                    <strong>Learning Activities:</strong>
+                                    <ul class="agenda-list">
+                                        <li>9:00 AM - Mindset for the day [5 min]</li>
+                                        <li>9:05 AM - Presentation & RISE Peer Feedback Overview by Dorothy [15 min]</li>
+                                        <li>9:20 AM - Course Map Presentations & Peer Feedback [140 min total across 3 rounds with breaks]</li>
+                                        <li>11:40 AM - Next Steps, Zoom Class Photo by Marisa, and Exit [20 min]</li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td>
+                                <ul class="materials-list">
+                                    <li>Framework 1</li>
+                                    <li>Video tips and resources on prototyping (Canva)</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul class="due-list">
+                                    <li><strong>Jul 27:</strong> Compassion Activity on Miro & incorporate active listening exercise into course map</li>
+                                    <li><strong>Jul 28:</strong> Exit Ticket Question on problem-solving process</li>
+                                    <li><strong>Jul 29:</strong> Post prototype photo on Miro board & exit share</li>
+                                    <li><strong>Jul 30:</strong> Reflective statement & Zoom Class Photo</li>
+                                    <li><strong>Jul 31:</strong> Course map presentation & RISE Peer Feedback on Google Doc</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="grades">
+            <h2>How Grades Work</h2>
+            <p>Grade policies, letter grade scale thresholds, and percentage weightings are not explicitly specified in the syllabus. Course completion and evaluation are based on active participation in workshops and completing the primary program deliverables listed below:</p>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Deliverable / Activity</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Course Map Revisions</strong></td>
+                            <td>Developing, drafting, and iteratively refining a redesigned course map incorporating entrepreneurial frameworks, SCAMPER, and EDP wheels.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Miro Board Activities</strong></td>
+                            <td>Sharing problem-based activities, value proposition statements, prototype photos, and compassion/listening activities on Miro.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Daily Exit Tickets & Forum Reflections</strong></td>
+                            <td>Participating in daily exit tickets (Waterfall Chat, verbal shares, Google Groups Forum reflections).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Final Presentation & RISE Peer Feedback</strong></td>
+                            <td>Presenting the redesigned course map on Day 10 and providing constructive feedback to peers on Google Docs using Emily Wray's RISE Model.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="policies">
+            <h2>Policies</h2>
+            
+            <h3>Active Engagement & Mindset</h3>
+            <p>Participants engage in the 4Cs (Creativity, Critical Thinking, Collaboration, Communication) in alignment with 21st-century skills. The program emphasizes an open, collaborative atmosphere to foster growth mindsets and creative problem-solving.</p>
+
+            <h3>Peer Feedback Framework (RISE Model)</h3>
+            <p>Peer feedback follows Emily Wray's RISE Model. Participants practice active listening and provide structured, meaningful, and constructive feedback during presentations and course map reviews.</p>
+
+            <h3>Community & Partner Collaboration</h3>
+            <p>Course redesigns are encouraged to integrate place-based problem-solving, service-learning, and active discovery with community partners or industry professionals, aligning with UH's Strategic Plan.</p>
+        </section>
+
+        <section id="practice">
+            <h2>Practice</h2>
+            <p>Test your understanding of the course frameworks and concepts:</p>
+            <a href="quiz.html" class="practice-link">Practice quiz</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>David Hijirida &copy; 2026</p>
+    </footer>
+
+</body>
+</html>
